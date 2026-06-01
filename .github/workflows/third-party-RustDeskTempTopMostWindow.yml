@@ -53,15 +53,15 @@ jobs:
         with:
           zip_password: ${{ secrets.ZIP_PASSWORD }}
 
-      # - name: Finalize and Cleanup zip/json
-#   if: always()
-#   continue-on-error: true
-#   uses: fjogeleit/http-request-action@v1
-#   with:
-#     url: "${{ secrets.GENURL }}/cleanzip"
-#     method: 'POST'
-#     customHeaders: '{"Content-Type": "application/json"}'
-#     data: '{"uuid": "${{ env.uuid }}"}'
+      - name: Finalize and Cleanup zip/json
+        if: always() # Run even if previous steps fail
+        continue-on-error: true
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: "${{ secrets.GENURL }}/cleanzip"
+          method: 'POST'
+          customHeaders: '{"Content-Type": "application/json"}'
+          data: '{"uuid": "${{ env.uuid }}"}'
 
       - name: Download the source code
         run: |
